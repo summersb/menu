@@ -1,0 +1,15 @@
+# .air.toml
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -buildvcs=false -o ./tmp/recipe-app ."
+  bin = "tmp/recipe-app"
+  full_bin = "tmp/recipe-app"
+  include_ext = ["go"]
+  exclude_dir = ["tmp", "vendor"]
+  exclude_file = []
+  follow_symlink = true
+
+[log]
+  time = true

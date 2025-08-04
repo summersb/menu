@@ -4,6 +4,10 @@ services:
     build: .
     ports:
       - "8080:8080"
+    volumes:
+      - .:/app
+      - go-cache:/go/pkg/mod
+    command: air
     depends_on:
       postgres:
           condition: service_healthy
@@ -24,3 +28,4 @@ services:
       retries: 5
 volumes:
   postgres_data:
+  go-cache:

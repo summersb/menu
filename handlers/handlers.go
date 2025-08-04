@@ -1,12 +1,13 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
+	"recipe-app/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"recipe-app/models"
 )
-
 
 // InitDB creates the necessary database tables
 
@@ -37,6 +38,7 @@ func GetRecipes(db *sqlx.DB) gin.HandlerFunc {
 		var recipes []models.Recipe
 		err := db.Select(&recipes, "SELECT id, name, ingredients, instructions FROM recipes")
 		if err != nil {
+			log.Printf("Error fetching recipes: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -49,14 +51,18 @@ func CreateRecipe(db *sqlx.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var recipe models.Recipe
 		if err := c.ShouldBindJSON(&recipe); err != nil {
+			log.Printf("Error binding JSON: %v", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+		log.Printf("Received recipe: %+v", recipe)
+
 		err := db.QueryRow(
 			"INSERT INTO recipes (name, ingredients, instructions) VALUES ($1, $2, $3) RETURNING id",
 			recipe.Name, recipe.Ingredients, recipe.Instructions,
 		).Scan(&recipe.ID)
 		if err != nil {
+			log.Printf("Error inserting recipe: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -75,6 +81,7 @@ func GetWeeklyMenu(db *sqlx.DB) gin.HandlerFunc {
 			JOIN recipes r ON wm.recipe_id = r.id
 			ORDER BY wm.id`)
 		if err != nil {
+			log.Printf("Error fetching menu: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -87,6 +94,7 @@ func CreateWeeklyMenu(db *sqlx.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var menu models.WeeklyMenu
 		if err := c.ShouldBindJSON(&menu); err != nil {
+			log.Printf("Error binding JSON for menu: %v", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
@@ -96,6 +104,7 @@ func CreateWeeklyMenu(db *sqlx.DB) gin.HandlerFunc {
 			menu.DayOfWeek, menu.RecipeID,
 		).Scan(&menu.ID)
 		if err != nil {
+			log.Printf("Error inserting menu: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -115,6 +124,7 @@ func GetShoppingList(db *sqlx.DB) gin.HandlerFunc {
 			JOIN recipes r ON wm.recipe_id = r.id`)
 
 		if err != nil {
+			log.Printf("Error fetching shopping list: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
