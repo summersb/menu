@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/app.js" defer></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Recipe Planner</h1>
+
+        <!-- Add Recipe -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Add Recipe</h2>
+            <div class="bg-white p-4 rounded shadow">
+                <input id="recipe-name" type="text" placeholder="Recipe Name" class="border p-2 mb-2 w-full">
+                <input id="recipe-ingredients" type="text" placeholder="Ingredients (comma-separated)" class="border p-2 mb-2 w-full">
+                <textarea id="recipe-instructions" placeholder="Instructions" class="border p-2 mb-2 w-full"></textarea>
+
+                <button onclick="addRecipe()" class="bg-blue-500 text-white p-2 rounded">Add Recipe</button>
+            </div>
+        </div>
+
+        <!-- Recipes List -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Recipes</h2>
+            <ul id="recipes-list" class="bg-white p-4 rounded shadow"></ul>
+        </div>
+
+        <!-- Weekly Menu -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Weekly Menu</h2>
+            <div class="bg-white p-4 rounded shadow">
+                <select id="menu-day" class="border p-2 mb-2">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+                <select id="menu-recipe" class="border p-2 mb-2"></select>
+                <button onclick="addToMenu()" class="bg-blue-500 text-white p-2 rounded">Add to Menu</button>
+            </div>
+            <ul id="menu-list" class="bg-white p-4 rounded shadow mt-4"></ul>
+        </div>
+
+        <!-- Shopping List -->
+        <div>
+            <h2 class="text-2xl font-semibold mb-4">Shopping List</h2>
+            <button onclick="getShoppingList()" class="bg-green-500 text-white p-2 rounded mb-4">Generate Shopping List</button>
+
+            <ul id="shopping-list" class="bg-white p-4 rounded shadow"></ul>
+        </div>
+    </div>
+</body>
+</html>
