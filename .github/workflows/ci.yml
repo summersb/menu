@@ -30,7 +30,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: 'tip' # Matches golang:tip-bookworm
+          go-version: '1.24'
 
       - name: Install dependencies
         run: go mod download
